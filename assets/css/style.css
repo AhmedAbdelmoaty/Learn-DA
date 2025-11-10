@@ -419,7 +419,6 @@ html {
 }
 /* ===== Contact section brand colors (target current HTML, no .contact-info needed) ===== */
 
-/* عنوان Get In Touch و Contact Us (الاتنين عندك h2 الآن) */
 .contact-form-section .card-body > h2 {
   color: var(--primary-color);
   font-weight: 700;
