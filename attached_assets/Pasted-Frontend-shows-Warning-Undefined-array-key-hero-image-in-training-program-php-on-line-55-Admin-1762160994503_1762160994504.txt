@@ -1,0 +1,86 @@
+Frontend shows: Warning: Undefined array key "hero_image" in training-program.php on line 55.
+
+Admin save throws: ERROR: column "hero_image" does not exist in training_hero.
+
+Goal
+
+Make the Hero a clean two-column block (no colored background):
+
+Left/Right column = text (title, subtitle) + CTA button linking to #contact.
+
+Other column = optional image (from Media Picker or URL).
+
+Columns auto-swap by language (LTR/RTL) just like the existing About section behavior. No extra “image side” toggle is needed.
+
+No PHP warnings if image is empty.
+
+Keep everything else unchanged.
+
+Do exactly these minimal steps
+
+DB migration (add missing columns)
+Add image fields to training_hero (adjust table name if different):
+
+ALTER TABLE training_hero
+  ADD COLUMN hero_image VARCHAR(255) NULL,
+  ADD COLUMN hero_image_alt VARCHAR(150) NULL;
+
+
+If columns already exist, skip gracefully.
+
+Admin – Training Program editor (/admin/training_program.php)
+
+Ensure form has fields (already visible):
+
+Hero Background Image (Media Picker or URL) → maps to hero_image
+
+Image ALT (optional) → maps to hero_image_alt
+
+On load: include hero_image, hero_image_alt in the SELECT.
+
+On save (INSERT/UPDATE): bind both columns. Example:
+
+$hero_image     = trim($_POST['hero_image'] ?? '');
+$hero_image_alt = trim($_POST['hero_image_alt'] ?? '');
+// bind :hero_image and :hero_image_alt in INSERT/UPDATE
+
+
+When the Media Picker returns a relative path, save it as-is (e.g., assets/uploads/...). Do not require full domain.
+
+Frontend – Training Program page (/training-program.php)
+
+Remove the colored background wrapper from the hero.
+
+Build a responsive 2-column layout using the current CSS/Bootstrap:
+
+Column A: <h1> title, subtitle <p>, CTA button → <a href="#contact" class="btn btn-primary btn-lg">…</a>
+
+Column B: If $hero['hero_image'] is non-empty, render <img> with img-fluid and object-fit: contain; max-height: 420px;.
+
+Auto LTR/RTL swap: compute direction based on current language (the same logic already used in About). If Arabic, reverse the row order; otherwise, normal.
+
+Guard against missing keys with null-coalescing:
+
+$img = $hero['hero_image'] ?? '';
+$alt = $hero['hero_image_alt'] ?? '';
+
+
+so no warnings appear when image is empty.
+
+Acceptance
+
+Visiting /training-program.php shows a hero with text + CTA on one side, optional image on the other, no background color.
+
+No PHP warnings/notices anywhere.
+
+Switching language flips the columns automatically (consistent with About).
+
+In Admin, choosing an image via Media Picker and saving persists to hero_image; clearing it hides the image on the frontend without errors.
+
+No other pages, sections, or DB tables are altered.
+
+Please implement now and confirm with a quick screenshot of:
+
+Admin → Training Program (Hero tab) showing the image saved.
+
+Frontend hero in EN and AR with correct side swap and no background.

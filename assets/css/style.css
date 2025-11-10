@@ -1,0 +1,458 @@
+:root {
+    --primary-color: #a8324e;
+    --secondary-color: #6c1e35;
+    --text-dark: #333;
+    --text-light: #666;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+.navbar {
+    padding: 1rem 0;
+    transition: all 0.3s;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color) !important;
+}
+
+.nav-link {
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: var(--primary-color) !important;
+}
+
+.hero-section {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.min-vh-70 {
+    min-height: 70vh;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    position: relative;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: var(--primary-color);
+    border-radius: 2px;
+}
+
+.benefit-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.benefit-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.benefit-icon {
+    color: var(--primary-color);
+}
+
+.course-info-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s;
+}
+
+.course-info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+}
+
+.modules-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+}
+
+.modules-card ul li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.modules-card ul li:last-child {
+    border-bottom: none;
+}
+
+.testimonial-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    position: relative;
+    border-left: 4px solid var(--primary-color);
+}
+
+.testimonial-text {
+    font-style: italic;
+    color: var(--text-light);
+}
+
+.testimonial-author {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.quote-icon {
+    opacity: 0.3;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+}
+
+.contact-info,
+.contact-details {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.contact-details p {
+    padding: 10px 0;
+}
+
+.social-icons a {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.social-icons a:hover {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    border-color: var(--primary-color) !important;
+}
+
+footer {
+    background-color: var(--primary-color) !important;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    padding: 12px 30px;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(168, 50, 78, 0.3);
+}
+
+.btn-outline-primary {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .hero-section {
+        min-height: 400px;
+    }
+    
+    .benefit-card {
+        margin-bottom: 20px;
+    }
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(168, 50, 78, 0.25);
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: rgba(168, 50, 78, 0.1);
+    color: var(--primary-color);
+}
+
+.accordion-button::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23a8324e'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+.card {
+    border: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+}
+
+.lead {
+    font-size: 1.1rem;
+}
+
+section {
+    scroll-margin-top: 80px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Content Pages Styling */
+.content-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+/* Content Hero Section with Background Image */
+.content-hero-section {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: var(--primary-color);
+    min-height: clamp(380px, 38vw, 640px);
+    display: flex;
+    align-items: center;
+    padding: 2.5rem 0;
+}
+
+.content-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5));
+    z-index: 1;
+}
+
+.content-hero-section .container {
+    z-index: 2;
+}
+
+.content-hero-title {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    line-height: 1.2;
+}
+
+.content-hero-subtitle {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 1.25rem;
+    line-height: 1.6;
+    margin-bottom: 0;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Content Body Section */
+.content-body-section {
+    padding: 3rem 0 4rem 0;
+}
+
+.content-body {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text-dark);
+}
+
+.content-body p {
+    margin-bottom: 1.5rem;
+}
+
+.content-body h2, .content-body h3, .content-body h4 {
+    color: var(--primary-color);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.content-body img {
+    max-width: 100%;
+    height: auto;
+    margin: 2rem auto;
+    display: block;
+}
+
+.content-body ul, .content-body ol {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+}
+
+.content-body li {
+    margin-bottom: 0.5rem;
+}
+
+.content-item-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-item-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(168, 50, 78, 0.15);
+}
+
+.content-item-card .card-body {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-item-card .card-title {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+@media (max-width: 768px) {
+    .content-body {
+        font-size: 1rem;
+    }
+    
+    .content-hero-section {
+        min-height: 300px;
+        padding: 2rem 0;
+    }
+    
+    .content-hero-section .container {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    
+    .content-hero-section .row {
+        --bs-gutter-x: 0.5rem;
+    }
+    
+    .content-hero-title {
+        font-size: 1.75rem;
+    }
+    
+    .content-hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .content-body-section {
+        padding: 2rem 0 3rem 0;
+    }
+    
+    .content-body-section .container {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    
+    .content-body-section .row {
+        --bs-gutter-x: 0.5rem;
+    }
+}
+.contact-form-section .form-control:focus,
+.contact-form-section .form-select:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 .2rem rgba(168, 50, 78, 0.25) !important;
+  outline: 0;
+}
+/* ===== Contact section brand colors (target current HTML, no .contact-info needed) ===== */
+
+/* عنوان Get In Touch و Contact Us (الاتنين عندك h2 الآن) */
+.contact-form-section .card-body > h2 {
+  color: var(--primary-color);
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+.contact-form-section .card-body > p.text-muted {
+  color: var(--text-dark) !important;   
+  font-weight: 600;                     
+}
+.contact-form-section i.fa-map-marker-alt,
+.contact-form-section i.fa-whatsapp,
+.contact-form-section i.fa-envelope {
+  color: var(--primary-color) !important;
+  opacity: 1;
+}
+.contact-form-section .fw-semibold {
+  color: var(--primary-color) !important;
+  font-weight: 800;
+}
+.contact-form-section .mb-4 .d-flex.mb-2 .text-muted {
+  color: var(--text-dark) !important;
+  font-weight: 500;
+}
+.contact-form-section .d-flex .fa-whatsapp + .text-muted {
+  color: var(--primary-color) !important;
+  font-weight: 700;
+}
+
+/* الإيميل بجوار أيقونة الظرف = أساسي وBold + hover تحت خط */
+.contact-form-section .d-flex .fa-envelope + a,
+.contact-form-section .d-flex .fa-envelope + * a {
+  color: var(--primary-color) !important;
+  font-weight: 700;
+  text-decoration: none;
+}
+#contact-form { scroll-margin-top: 180px; }

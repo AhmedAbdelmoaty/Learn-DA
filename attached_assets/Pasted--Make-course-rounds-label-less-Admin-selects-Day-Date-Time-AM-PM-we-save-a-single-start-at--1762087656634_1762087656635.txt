@@ -1,0 +1,116 @@
+
+Make course rounds label-less. Admin selects Day + Date + Time (AM/PM); we save a single start_at (DATETIME). Frontend dropdown builds the display string from start_at only. No GMT text.
+
+Stack constraints:
+
+Keep existing PHP + MySQL + Bootstrap structure.
+
+Do not drop tables/columns; just ignore any label_en/label_ar if they exist.
+
+Keep current language system (EN/AR via cookie/query). No /en /ar directories.
+
+Non-destructive, idempotent changes.
+
+1) Admin: change “Course Rounds” form (no labels; use Day/Date/Time)
+
+In admin/course_rounds.php (Add/Edit modal & handler):
+
+Remove label fields from UI (or hide them) and stop using them.
+
+Add three inputs:
+
+round_day (select): Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
+
+AR labels when UI is Arabic: الأحد، الإثنين، الثلاثاء، الأربعاء، الخميس، الجمعة، السبت
+
+round_date (date input): HTML5 date
+
+round_time (time + AM/PM): easiest = two selects
+
+hour (1..12), minute (00, 15, 30, 45), ampm (AM/PM)
+
+On submit: compose start_at = {round_date} + {hour:minute AM/PM} (convert to 24h) and save into DB.
+
+Keep fields published, sort_order as they are.
+
+Do not require or save labels; if columns exist, leave them NULL/unchanged.
+
+In the grid/listing, show a preview of the formatted value from start_at (per current admin language), e.g.:
+
+EN: Sun 02/11/2025 — 10:00 AM
+
+AR: الأحد 02/11/2025 — 10:00 صباحًا
+
+Implementation note: build the DateTime in PHP from the three pieces, validate, then write start_at (Y-m-d H:i:s). No timezone suffix in stored label or UI.
+
+2) Frontend form: render from start_at only
+
+In the contact form component (now at the bottom of every page):
+
+Load published rounds ordered by start_at ASC, sort_order ASC.
+
+For each round, format the option label solely from start_at:
+
+EN format: D d/m/Y — h:i A (example: Sun 02/11/2025 — 10:00 AM)
+
+AR format: day in Arabic + d/m/Y — h:i + صباحًا/مساءً (no GMT).
+
+<option value="{id}">Formatted label</option>
+
+Field setup:
+
+Label (EN): Choose the course date
+
+Label (AR): اختَر موعد الدورة
+
+Name: selected_round_id
+
+Position: after Phone, before Message.
+
+If there are no published rounds, hide the select and show:
+
+EN: No upcoming rounds available at the moment.
+
+AR: لا توجد مواعيد متاحة حاليًا.
+
+3) Submission handling (unchanged logic + snapshot)
+
+When saving a contact message:
+
+Save selected_round_id (nullable).
+
+Build a snapshot label from start_at at submit time (respecting current language) and save it in selected_round_label (VARCHAR 255).
+
+EN sample: Sun 02/11/2025 — 10:00 AM
+
+AR sample: الأحد 02/11/2025 — 10:00 صباحًا
+
+Include the same text in the notification email:
+
+EN: Selected round: <snapshot>
+
+AR: ميعاد الدورة المختار: <snapshot>
+
+This preserves historical accuracy if a round’s date/time is later edited.
+
+4) Minimal DB / safety
+
+Keep course_rounds.start_at as the single source of truth.
+
+Do not drop existing label_en/label_ar; just ignore them.
+
+No schema changes required beyond what already exists.
+
+5) Acceptance criteria
+
+Admin can add/edit rounds via Day + Date + Time; saving composes start_at.
+
+Rounds list shows the formatted preview from start_at (per current admin language).
+
+Frontend dropdown shows only the formatted string from start_at (no GMT), EN/AR correctly.
+
+Contact submissions store selected_round_id + selected_round_label (generated from start_at at submit).
+
+Emails include the selected round text.
+
+No breaking changes or PHP warnings. Non-destructive.

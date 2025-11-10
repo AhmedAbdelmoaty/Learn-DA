@@ -1,0 +1,354 @@
+
+Build a fully functional, responsive Custom CMS (Content Management System) from scratch using PHP, MySQL, and Bootstrap 5, not WordPress.
+The CMS will power a bilingual (English–Arabic) course website inspired by the IMP website design and structure.
+
+🌐 FRONTEND (Public Website)
+1. General Requirements
+
+Use Bootstrap 5 for all responsive layouts and styling.
+
+Include both English and Arabic versions (with language toggle in the header and footer).
+
+Arabic version must support RTL layout (using a separate rtl.css or automatic direction detection).
+
+Use placeholder images (e.g., https://via.placeholder.com/800x400) and placeholder text (Lorem Ipsum in both languages).
+
+The website must be fully responsive (desktop, tablet, mobile).
+
+All text content should come from the database, not hardcoded.
+
+2. Pages & Sections
+
+Create the following pages (or sections if it’s a single-page structure):
+
+Homepage (index.php)
+
+Includes all the following sections, exactly as described:
+
+Hero Section
+
+Large hero banner with background image (placeholder).
+
+Overlay title and subtitle, both editable.
+
+Prominent CTA button “Enroll Now” linking to Contact/Registration section.
+
+Example:
+
+Title: “Join Our [Course Name] Now!”
+
+Subtitle: “Start enhancing your skills with our specialized course tailored to the latest industry trends.”
+
+About Course Section
+
+Heading: “Why [Course Name]?”
+
+3–4 lines of placeholder text (explaining the course purpose and benefits).
+
+Arabic version uses mirrored alignment and Arabic placeholder text.
+
+Key Benefits Section
+
+3 or 4 columns with icons + short text.
+
+Example benefits:
+
+Practical Learning | تدريب عملي
+
+Career Growth | تطوير مهني
+
+Continuous Support | دعم مستمر
+
+Each has an icon (Font Awesome), a title, and a short description.
+
+Responsive design (stacks vertically on mobile).
+
+Course Details / Curriculum
+
+Title: “Course Outline”
+
+List 4–6 sample modules:
+
+Module 1: Introduction to ___
+
+Module 2: Fundamentals of ___
+
+Include:
+
+Duration (e.g., “8 weeks, 50 hours total”)
+
+Format (e.g., “Online live sessions”)
+
+Fee (e.g., “10,000 EGP”)
+
+Arabic translation for all text, correctly formatted RTL.
+
+About Us Section
+
+Heading: “About [Institute Name]”
+
+2–3 sentences about the institute’s mission and background (placeholder).
+
+Arabic version mirrors alignment and text direction.
+
+Testimonials Section
+
+2–3 testimonials (as quotes, carousel, or stacked).
+
+Example: “This course exceeded my expectations!” – A. Student
+
+Arabic translation included.
+
+Clean and minimal layout.
+
+FAQ Section (Optional)
+
+3–4 common questions and answers.
+
+Example:
+
+“Who is this course for?” → “Beginners and professionals looking to upskill.”
+
+“Do I get a certificate?” → “Yes, after completing the course.”
+
+Arabic Q&A provided too.
+
+Contact / Registration Section
+
+Contact form (Name, Email, Phone, Message).
+
+Form submits to a PHP handler (send_message.php) that can later connect to email or Google Sheets.
+
+Adjacent contact info: Email, phone, address.
+
+CTA: “Submit” / “إرسال”.
+
+Publicly accessible (no login required).
+
+Footer
+
+Contains:
+
+Address, phone, email
+
+Social media icons (Facebook, Twitter, LinkedIn, Instagram)
+
+Copyright notice:
+
+English: “© 2025 [Site Name]. All rights reserved.”
+
+Arabic equivalent
+
+Optional language switcher duplicated here.
+
+Arabic text right-aligned with RTL style.
+
+🧭 NAVIGATION
+
+Sticky top navbar with menu items:
+
+Home, About, Course, Testimonials, Contact
+
+Arabic: الرئيسية, من نحن, الدورة, الشهادات, اتصل بنا
+
+Language toggle (EN/AR) using link or flag icon.
+
+Each menu item anchors to its section or links to page.
+
+Responsive hamburger menu for mobile.
+
+🧱 CMS STRUCTURE (Backend)
+1. Admin Authentication
+
+Login page (admin/login.php)
+
+Email + Password fields
+
+Remember me optional
+
+Admin credentials stored in DB table admin_users
+
+Passwords stored using password_hash()
+
+Initial admin auto-generated at first setup (see setup logic below)
+
+2. Admin Dashboard (admin/dashboard.php)
+
+Accessible only after successful login (session-based authentication).
+
+Sidebar navigation for all site sections:
+
+Hero Section
+
+About Course
+
+Key Benefits
+
+Course Details
+
+About Us
+
+Testimonials
+
+FAQ
+
+Contact Info
+
+Site Settings (Logo, Site Name, Colors)
+
+Media Upload
+
+Manage Admins
+
+Each section has a simple editable form (title, text, images, icons, etc.) that updates database records.
+
+⚙️ FEATURES INSIDE ADMIN PANEL
+
+Content Management
+
+Edit all homepage sections directly.
+
+Upload images (with preview and delete option).
+
+All text fields and content stored in DB per language.
+
+Option to add new courses or sections dynamically (scalable).
+
+Media Upload System
+
+Page admin/media_upload.php
+
+“Upload Image” button → stores file in /uploads/ and saves path in DB.
+
+Display gallery view of uploaded images with delete option.
+
+Site Settings
+
+Manage Logo (upload), Site Name, and color theme.
+
+Saved in DB (e.g., table site_settings).
+
+Manage Admins
+
+Add, edit, or delete admin accounts.
+
+Role = “Admin” (for now, single role system).
+
+Password reset and change options.
+
+Forgot Password
+
+On the login page, include a “Forgot Password?” link.
+
+Sends reset link via email (using SMTP if configured).
+
+If SMTP not configured, show a temporary reset token in the console (for manual recovery).
+
+Security
+
+Sessions for login.
+
+Auto logout after inactivity.
+
+CSRF token on forms.
+
+Escaped SQL queries (prepared statements).
+
+Passwords hashed (no plain text).
+
+🧰 INSTALLATION & DATABASE
+1. Setup Script
+
+Include a setup file (install.php or setup.php) that runs once:
+
+Creates the MySQL tables automatically:
+
+admin_users
+
+hero_section, about_section, benefits, course_details, testimonials, faq, site_settings, uploads
+
+Inserts one default admin user:
+
+email: admin@example.com
+password: password_hash('123456', PASSWORD_DEFAULT)
+
+
+Displays these credentials in the console or first-time message (not stored in code).
+
+Deletes itself or disables further access after installation.
+
+2. Database Connection
+
+includes/db.php handles all connections.
+
+Database credentials configurable in one place.
+
+3. Recovery
+
+If admin credentials are lost, developer can manually reset via DB (replace password hash).
+
+🎨 DESIGN & INSPIRATION
+
+Use IMP website design (provided screenshots) as a visual reference for layout, spacing, color palette, and typography.
+
+Apply consistent modern styling, clean spacing, large readable typography.
+
+Use soft shadows, rounded buttons, and subtle hover animations.
+
+Include Bootstrap utilities for spacing, grid, and responsiveness.
+
+📁 FILE STRUCTURE (Example)
+/cms-project
+  /admin
+    dashboard.php
+    login.php
+    hero.php
+    about.php
+    benefits.php
+    course_details.php
+    testimonials.php
+    faq.php
+    media_upload.php
+    site_settings.php
+    manage_admins.php
+  /assets
+    /css
+      style.css
+      rtl.css
+    /js
+      main.js
+    /uploads
+  /includes
+    db.php
+    auth.php
+    header.php
+    footer.php
+  /lang
+    en.php
+    ar.php
+  index.php
+  contact.php
+  install.php
+  database.sql
+
+🧩 FUNCTIONALITY SUMMARY
+
+✅ Fully custom CMS (no WordPress)
+✅ English + Arabic (with RTL)
+✅ Bootstrap 5 responsive design
+✅ Full admin dashboard
+✅ Media upload system
+✅ Multi-admin support
+✅ Forgot password (email-based)
+✅ Editable all sections (hero, about, benefits, course details, etc.)
+✅ Dynamic site settings (logo, name, colors)
+✅ Secure login + session handling
+✅ Modular structure for easy expansion
+✅ Inspired design based on IMP site layout/screenshots
+
+📝 Note:
+
+Use placeholder images and texts for all sample content.
+Focus on correct structure, styling, and CMS functionality.
+Actual content will be replaced later via the admin panel.
+All front-end text and data must come from the database, not hardcoded.
