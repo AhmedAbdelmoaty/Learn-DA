@@ -446,8 +446,6 @@ html {
   color: var(--primary-color) !important;
   font-weight: 700;
 }
-
-/* الإيميل بجوار أيقونة الظرف = أساسي وBold + hover تحت خط */
 .contact-form-section .d-flex .fa-envelope + a,
 .contact-form-section .d-flex .fa-envelope + * a {
   color: var(--primary-color) !important;

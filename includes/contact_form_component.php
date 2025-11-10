@@ -1,20 +1,14 @@
 <?php
-// Load published course rounds (كما هي)
 $rounds_stmt = $pdo->query("SELECT * FROM course_rounds WHERE published = 1 ORDER BY sort_order ASC, id DESC");
 $course_rounds = $rounds_stmt->fetchAll();
 
-/**
- * نحاول قراءة قيم الـInfo والروابط من footer_settings.
- * لو $footer_settings غير معرّف في السياق، نجلب القيم المطلوبة مباشرة من DB كاحتياط.
- */
+
 function get_footer_setting($key, $default = '')
 {
-    // استخدم المتغيرين العالميين إذا كانا متاحين
     if (isset($GLOBALS['footer_settings']) && is_array($GLOBALS['footer_settings']) && array_key_exists($key, $GLOBALS['footer_settings'])) {
         return $GLOBALS['footer_settings'][$key];
     }
 
-    // fallback: قراءة مفاتيح منفردة من DB إن أمكن
     if (isset($GLOBALS['pdo'])) {
         static $cache = [];
         if (!array_key_exists($key, $cache)) {
@@ -32,32 +26,26 @@ function get_footer_setting($key, $default = '')
     return $default;
 }
 
-// لغة الواجهة
 $lang = isset($lang) ? $lang : 'en';
 
 $contact_title = get_footer_setting('contact_title_' . $lang, $lang === 'ar' ? 'ارسل رسالة' : 'Get In Touch');
 $contact_intro = get_footer_setting('contact_intro_' . $lang, $lang === 'ar' ? 'نحن دائمًا جاهزون لمساعدتك والإجابة على أسئلتك.' : 'We are always ready to help you and answer your questions');
 
-// عناوين/هواتف الإمارات ومصر
 $uae_address = get_footer_setting('uae_address_' . $lang, '');
 $uae_phone   = get_footer_setting('uae_phone', '');
 $egy_address = get_footer_setting('egypt_address_' . $lang, '');
 $egy_phone   = get_footer_setting('egypt_phone', '');
 
-// البريد
 $contact_email = get_footer_setting('contact_email', isset($settings['contact_email']) ? $settings['contact_email'] : '');
 
-// روابط السوشيال (مثل تصميم IMP)
 $social_facebook  = get_footer_setting('social_facebook_url', '');
 $social_linkedin  = get_footer_setting('social_linkedin_url', '');
 $social_x         = get_footer_setting('social_x_url', ''); // X (Twitter)
 $social_instagram = get_footer_setting('social_instagram_url', '');
 
-// عناوين البلدان
 $uae_title = ($lang === 'ar') ? 'الإمارات العربية المتحدة' : 'U.A.E.';
 $egy_title = ($lang === 'ar') ? 'جمهورية مصر العربية' : 'Egypt';
 
-// ترتيب الأعمدة حسب اللغة (Info على اليسار في EN، وعلى اليمين في AR)
 $infoOrder = ($lang === 'ar') ? 'order-lg-2' : 'order-lg-1';
 $formOrder = ($lang === 'ar') ? 'order-lg-1' : 'order-lg-2';
 ?>
