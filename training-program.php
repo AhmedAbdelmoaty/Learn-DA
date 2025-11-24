@@ -4,7 +4,7 @@ require_once 'includes/db.php';
 $lang = isset($_GET['lang']) && $_GET['lang'] === 'ar' ? 'ar' : 'en';
 $page_title = $lang === 'en' ? 'Training Program - Learn Data Analysis' : 'البرنامج التدريبي - تعلم تحليل البيانات';
 
-
+// Load header
 require_once 'includes/site_header.php';
 
 // Get Hero section
