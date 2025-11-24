@@ -1,0 +1,23 @@
+# CMS Specific
+.installed
+assets/uploads/*
+!assets/uploads/.gitkeep
+
+# PHP
+*.log
+*.tmp
+phpinfo.php
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
