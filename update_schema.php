@@ -4,13 +4,22 @@ require_once 'includes/db.php';
 echo "Starting database schema update...\n\n";
 
 try {
-    // Drop old topics table if it exists with wrong schema
-    $pdo->exec("DROP TABLE IF EXISTS topics CASCADE");
-    echo "✓ Old topics table dropped\n";
-    
+    // Temporarily disable foreign key checks to simplify table recreation
+    $pdo->exec("SET FOREIGN_KEY_CHECKS=0");
+
+    // Drop tables in dependency order
+    $pdo->exec("DROP TABLE IF EXISTS content_items");
+    $pdo->exec("DROP TABLE IF EXISTS page_sections");
+    $pdo->exec("DROP TABLE IF EXISTS footer_settings");
+    $pdo->exec("DROP TABLE IF EXISTS topics");
+    echo "✓ Existing tables dropped (if present)\n";
+
+    // Re-enable foreign key checks for creation
+    $pdo->exec("SET FOREIGN_KEY_CHECKS=1");
+
     // Topics table (Excel, Power BI, Statistics, SQL)
     $pdo->exec("CREATE TABLE topics (
-        id SERIAL PRIMARY KEY,
+        id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         slug VARCHAR(100) UNIQUE NOT NULL,
         title_en VARCHAR(255) NOT NULL,
         title_ar VARCHAR(255) NOT NULL,
@@ -22,19 +31,15 @@ try {
         hero_overlay_opacity_start INT DEFAULT 90,
         hero_overlay_opacity_end INT DEFAULT 90,
         display_order INT DEFAULT 0,
-        is_tool BOOLEAN DEFAULT false,
+        is_tool TINYINT(1) DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )");
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
     echo "✓ Topics table created\n";
 
-    // Drop and recreate content_items table
-    $pdo->exec("DROP TABLE IF EXISTS content_items CASCADE");
-    echo "✓ Old content_items table dropped\n";
-    
     // Content items (Explainers for each topic)
     $pdo->exec("CREATE TABLE content_items (
-        id SERIAL PRIMARY KEY,
-        topic_id INT REFERENCES topics(id) ON DELETE CASCADE,
+        id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        topic_id INT UNSIGNED NOT NULL,
         slug VARCHAR(100) NOT NULL,
         title_en VARCHAR(255) NOT NULL,
         title_ar VARCHAR(255) NOT NULL,
@@ -48,17 +53,14 @@ try {
         status VARCHAR(20) DEFAULT 'published',
         display_order INT DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        UNIQUE(topic_id, slug)
-    )");
+        UNIQUE KEY topic_slug_unique (topic_id, slug),
+        CONSTRAINT fk_content_topic FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE CASCADE
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
     echo "✓ Content items table created\n";
 
-    // Drop and recreate page_sections table
-    $pdo->exec("DROP TABLE IF EXISTS page_sections CASCADE");
-    echo "✓ Old page_sections table dropped\n";
-    
     // Page sections (for About page and Home page sections)
     $pdo->exec("CREATE TABLE page_sections (
-        id SERIAL PRIMARY KEY,
+        id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         page_name VARCHAR(50) NOT NULL,
         section_key VARCHAR(50) NOT NULL,
         title_en VARCHAR(255),
@@ -68,24 +70,20 @@ try {
         body_en TEXT,
         body_ar TEXT,
         image VARCHAR(500),
-        is_enabled BOOLEAN DEFAULT true,
+        is_enabled TINYINT(1) DEFAULT 1,
         display_order INT DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        UNIQUE(page_name, section_key)
-    )");
+        UNIQUE KEY page_section_unique (page_name, section_key)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
     echo "✓ Page sections table created\n";
 
-    // Drop and recreate footer_settings table
-    $pdo->exec("DROP TABLE IF EXISTS footer_settings CASCADE");
-    echo "✓ Old footer_settings table dropped\n";
-    
     // Footer settings
     $pdo->exec("CREATE TABLE footer_settings (
-        id SERIAL PRIMARY KEY,
+        id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         setting_key VARCHAR(100) UNIQUE NOT NULL,
         setting_value TEXT,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )");
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
     echo "✓ Footer settings table created\n";
 
     echo "\n✅ Database schema updated successfully!\n";

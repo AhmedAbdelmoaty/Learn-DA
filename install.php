@@ -8,18 +8,18 @@ if (file_exists('.installed')) {
 try {
     $pdo->exec("
         CREATE TABLE IF NOT EXISTS admin_users (
-            id SERIAL PRIMARY KEY,
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(100) NOT NULL,
             email VARCHAR(100) UNIQUE NOT NULL,
             password VARCHAR(255) NOT NULL,
             role VARCHAR(20) NOT NULL DEFAULT 'super_admin',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ");
 
     $pdo->exec("
         CREATE TABLE IF NOT EXISTS hero_section (
-            id SERIAL PRIMARY KEY,
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             title_en TEXT,
             title_ar TEXT,
             subtitle_en TEXT,
@@ -28,23 +28,23 @@ try {
             button_text_ar VARCHAR(50),
             background_image VARCHAR(255),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ");
 
     $pdo->exec("
         CREATE TABLE IF NOT EXISTS about_section (
-            id SERIAL PRIMARY KEY,
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             heading_en TEXT,
             heading_ar TEXT,
             content_en TEXT,
             content_ar TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ");
 
     $pdo->exec("
         CREATE TABLE IF NOT EXISTS benefits (
-            id SERIAL PRIMARY KEY,
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             icon TEXT,
             title_en VARCHAR(100),
             title_ar VARCHAR(100),
@@ -52,12 +52,12 @@ try {
             description_ar TEXT,
             display_order INT DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ");
 
     $pdo->exec("
         CREATE TABLE IF NOT EXISTS course_details (
-            id SERIAL PRIMARY KEY,
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             heading_en TEXT,
             heading_ar TEXT,
             duration_en VARCHAR(100),
@@ -69,60 +69,60 @@ try {
             modules_en TEXT,
             modules_ar TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ");
 
     $pdo->exec("
         CREATE TABLE IF NOT EXISTS testimonials (
-            id SERIAL PRIMARY KEY,
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name_en VARCHAR(100),
             name_ar VARCHAR(100),
             content_en TEXT,
             content_ar TEXT,
             display_order INT DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ");
 
     $pdo->exec("
         CREATE TABLE IF NOT EXISTS faq (
-            id SERIAL PRIMARY KEY,
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             question_en TEXT,
             question_ar TEXT,
             answer_en TEXT,
             answer_ar TEXT,
             display_order INT DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ");
 
     $pdo->exec("
         CREATE TABLE IF NOT EXISTS site_settings (
-            id SERIAL PRIMARY KEY,
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             setting_key VARCHAR(100) UNIQUE NOT NULL,
             setting_value TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ");
 
     $pdo->exec("
         CREATE TABLE IF NOT EXISTS uploads (
-            id SERIAL PRIMARY KEY,
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             filename VARCHAR(255) NOT NULL,
             filepath VARCHAR(255) NOT NULL,
             uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ");
 
     $pdo->exec("
         CREATE TABLE IF NOT EXISTS contact_messages (
-            id SERIAL PRIMARY KEY,
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(100),
             email VARCHAR(100),
             phone VARCHAR(50),
             message TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ");
 
     $hashedPassword = password_hash('123456', PASSWORD_DEFAULT);
