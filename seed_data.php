@@ -67,18 +67,18 @@ try {
     foreach ($topics as $topic) {
         $stmt = $pdo->prepare("INSERT INTO topics (slug, title_en, title_ar, intro_en, intro_ar, hero_image, hero_overlay_color_start, hero_overlay_color_end, hero_overlay_opacity_start, hero_overlay_opacity_end, display_order, is_tool)
                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                               ON CONFLICT (slug) DO UPDATE SET
-                               title_en = EXCLUDED.title_en,
-                               title_ar = EXCLUDED.title_ar,
-                               intro_en = EXCLUDED.intro_en,
-                               intro_ar = EXCLUDED.intro_ar,
-                               hero_image = EXCLUDED.hero_image,
-                               hero_overlay_color_start = EXCLUDED.hero_overlay_color_start,
-                               hero_overlay_color_end = EXCLUDED.hero_overlay_color_end,
-                               hero_overlay_opacity_start = EXCLUDED.hero_overlay_opacity_start,
-                               hero_overlay_opacity_end = EXCLUDED.hero_overlay_opacity_end,
-                               display_order = EXCLUDED.display_order,
-                               is_tool = EXCLUDED.is_tool");
+                               ON DUPLICATE KEY UPDATE
+                               title_en = VALUES(title_en),
+                               title_ar = VALUES(title_ar),
+                               intro_en = VALUES(intro_en),
+                               intro_ar = VALUES(intro_ar),
+                               hero_image = VALUES(hero_image),
+                               hero_overlay_color_start = VALUES(hero_overlay_color_start),
+                               hero_overlay_color_end = VALUES(hero_overlay_color_end),
+                               hero_overlay_opacity_start = VALUES(hero_overlay_opacity_start),
+                               hero_overlay_opacity_end = VALUES(hero_overlay_opacity_end),
+                               display_order = VALUES(display_order),
+                               is_tool = VALUES(is_tool)");
         $stmt->execute([
             $topic['slug'],
             $topic['title_en'],
@@ -234,18 +234,18 @@ try {
     foreach ($content_items as $item) {
         $stmt = $pdo->prepare("INSERT INTO content_items (topic_id, slug, title_en, title_ar, summary_en, summary_ar, body_en, body_ar, cta_note_en, cta_note_ar, hero_image, status, display_order)
                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                               ON CONFLICT (topic_id, slug) DO UPDATE SET
-                               title_en = EXCLUDED.title_en,
-                               title_ar = EXCLUDED.title_ar,
-                               summary_en = EXCLUDED.summary_en,
-                               summary_ar = EXCLUDED.summary_ar,
-                               body_en = EXCLUDED.body_en,
-                               body_ar = EXCLUDED.body_ar,
-                               cta_note_en = EXCLUDED.cta_note_en,
-                               cta_note_ar = EXCLUDED.cta_note_ar,
-                               hero_image = EXCLUDED.hero_image,
-                               status = EXCLUDED.status,
-                               display_order = EXCLUDED.display_order");
+                               ON DUPLICATE KEY UPDATE
+                               title_en = VALUES(title_en),
+                               title_ar = VALUES(title_ar),
+                               summary_en = VALUES(summary_en),
+                               summary_ar = VALUES(summary_ar),
+                               body_en = VALUES(body_en),
+                               body_ar = VALUES(body_ar),
+                               cta_note_en = VALUES(cta_note_en),
+                               cta_note_ar = VALUES(cta_note_ar),
+                               hero_image = VALUES(hero_image),
+                               status = VALUES(status),
+                               display_order = VALUES(display_order)");
         $stmt->execute([
             $item['topic_id'],
             $item['slug'],
@@ -306,18 +306,18 @@ try {
     ];
 
     foreach ($about_sections as $section) {
-        $stmt = $pdo->prepare("INSERT INTO page_sections (page_name, section_key, title_en, title_ar, subtitle_en, subtitle_ar, body_en, body_ar, image, is_enabled, display_order) 
+        $stmt = $pdo->prepare("INSERT INTO page_sections (page_name, section_key, title_en, title_ar, subtitle_en, subtitle_ar, body_en, body_ar, image, is_enabled, display_order)
                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                               ON CONFLICT (page_name, section_key) DO UPDATE SET 
-                               title_en = EXCLUDED.title_en,
-                               title_ar = EXCLUDED.title_ar,
-                               subtitle_en = EXCLUDED.subtitle_en,
-                               subtitle_ar = EXCLUDED.subtitle_ar,
-                               body_en = EXCLUDED.body_en,
-                               body_ar = EXCLUDED.body_ar,
-                               image = EXCLUDED.image,
-                               is_enabled = EXCLUDED.is_enabled,
-                               display_order = EXCLUDED.display_order");
+                               ON DUPLICATE KEY UPDATE
+                               title_en = VALUES(title_en),
+                               title_ar = VALUES(title_ar),
+                               subtitle_en = VALUES(subtitle_en),
+                               subtitle_ar = VALUES(subtitle_ar),
+                               body_en = VALUES(body_en),
+                               body_ar = VALUES(body_ar),
+                               image = VALUES(image),
+                               is_enabled = VALUES(is_enabled),
+                               display_order = VALUES(display_order)");
         $stmt->execute([
             $section['page_name'],
             $section['section_key'],
@@ -349,15 +349,15 @@ try {
     ];
 
     foreach ($home_sections as $section) {
-        $stmt = $pdo->prepare("INSERT INTO page_sections (page_name, section_key, title_en, title_ar, body_en, body_ar, is_enabled, display_order) 
+        $stmt = $pdo->prepare("INSERT INTO page_sections (page_name, section_key, title_en, title_ar, body_en, body_ar, is_enabled, display_order)
                                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                               ON CONFLICT (page_name, section_key) DO UPDATE SET 
-                               title_en = EXCLUDED.title_en,
-                               title_ar = EXCLUDED.title_ar,
-                               body_en = EXCLUDED.body_en,
-                               body_ar = EXCLUDED.body_ar,
-                               is_enabled = EXCLUDED.is_enabled,
-                               display_order = EXCLUDED.display_order");
+                               ON DUPLICATE KEY UPDATE
+                               title_en = VALUES(title_en),
+                               title_ar = VALUES(title_ar),
+                               body_en = VALUES(body_en),
+                               body_ar = VALUES(body_ar),
+                               is_enabled = VALUES(is_enabled),
+                               display_order = VALUES(display_order)");
         $stmt->execute([
             $section['page_name'],
             $section['section_key'],
@@ -399,16 +399,16 @@ try {
     foreach ($tools_sections as $section) {
         $stmt = $pdo->prepare("INSERT INTO page_sections (page_name, section_key, title_en, title_ar, subtitle_en, subtitle_ar, body_en, body_ar, image, is_enabled, display_order)
                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                               ON CONFLICT (page_name, section_key) DO UPDATE SET
-                               title_en = EXCLUDED.title_en,
-                               title_ar = EXCLUDED.title_ar,
-                               subtitle_en = EXCLUDED.subtitle_en,
-                               subtitle_ar = EXCLUDED.subtitle_ar,
-                               body_en = EXCLUDED.body_en,
-                               body_ar = EXCLUDED.body_ar,
-                               image = EXCLUDED.image,
-                               is_enabled = EXCLUDED.is_enabled,
-                               display_order = EXCLUDED.display_order");
+                               ON DUPLICATE KEY UPDATE
+                               title_en = VALUES(title_en),
+                               title_ar = VALUES(title_ar),
+                               subtitle_en = VALUES(subtitle_en),
+                               subtitle_ar = VALUES(subtitle_ar),
+                               body_en = VALUES(body_en),
+                               body_ar = VALUES(body_ar),
+                               image = VALUES(image),
+                               is_enabled = VALUES(is_enabled),
+                               display_order = VALUES(display_order)");
         $stmt->execute([
             $section['page_name'],
             $section['section_key'],
@@ -447,10 +447,10 @@ try {
     ];
 
     foreach ($footer_settings as $setting) {
-        $stmt = $pdo->prepare("INSERT INTO footer_settings (setting_key, setting_value) 
-                               VALUES (?, ?) 
-                               ON CONFLICT (setting_key) DO UPDATE SET 
-                               setting_value = EXCLUDED.setting_value");
+        $stmt = $pdo->prepare("INSERT INTO footer_settings (setting_key, setting_value)
+                               VALUES (?, ?)
+                               ON DUPLICATE KEY UPDATE
+                               setting_value = VALUES(setting_value)");
         $stmt->execute([$setting['setting_key'], $setting['setting_value']]);
     }
     echo "✓ Footer settings seeded\n";

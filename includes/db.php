@@ -1,36 +1,57 @@
 <?php
-$database_url = getenv('DATABASE_URL');
+$database_url = getenv('DATABASE_URL') ?: ($_ENV['DATABASE_URL'] ?? null);
 
-if (!$database_url && isset($_ENV['DATABASE_URL'])) {
-    $database_url = $_ENV['DATABASE_URL'];
-}
+$driver = 'mysql';
+$default_port = 3306;
 
 if ($database_url) {
-    try {
-        $url = parse_url($database_url);
-        
-        $host = $url['host'] ?? 'localhost';
-        $port = $url['port'] ?? 5432;
-        $dbname = ltrim($url['path'] ?? '', '/');
-        $user = $url['user'] ?? '';
-        $password = $url['pass'] ?? '';
-        
-        parse_str($url['query'] ?? '', $query_params);
-        $sslmode = $query_params['sslmode'] ?? '';
-        
+    $url = parse_url($database_url);
+
+    if ($url === false) {
+        die('Invalid DATABASE_URL format.');
+    }
+
+    $scheme = strtolower($url['scheme'] ?? '');
+    if (in_array($scheme, ['postgres', 'postgresql', 'pgsql'], true)) {
+        $driver = 'pgsql';
+        $default_port = 5432;
+    }
+
+    $host = $url['host'] ?? 'localhost';
+    $port = $url['port'] ?? $default_port;
+    $dbname = ltrim($url['path'] ?? '', '/');
+    $user = $url['user'] ?? '';
+    $password = $url['pass'] ?? '';
+
+    parse_str($url['query'] ?? '', $query_params);
+    $sslmode = $query_params['sslmode'] ?? '';
+} else {
+    $host = getenv('MYSQL_HOST') ?: 'localhost';
+    $port = getenv('MYSQL_PORT') ?: 3306;
+    $dbname = getenv('MYSQL_DATABASE') ?: 'your_db_name';
+    $user = getenv('MYSQL_USER') ?: 'your_db_user';
+    $password = getenv('MYSQL_PASSWORD') ?: 'your_db_password';
+}
+
+if (empty($dbname)) {
+    die('Database name is not configured.');
+}
+
+try {
+    if ($driver === 'pgsql') {
         $dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
-        if ($sslmode === 'require') {
+        if (($sslmode ?? '') === 'require') {
             $dsn .= ";sslmode=require";
         }
-        
-        $pdo = new PDO($dsn, $user, $password, [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-        ]);
-    } catch(PDOException $e) {
-        die("Database connection failed: " . $e->getMessage());
+    } else {
+        $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4";
     }
-} else {
-    die("Database configuration not found. Please check DATABASE_URL environment variable.");
+
+    $pdo = new PDO($dsn, $user, $password, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ]);
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
 }
 ?>
