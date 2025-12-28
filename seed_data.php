@@ -1,4 +1,9 @@
 <?php
+if (!getenv('ALLOW_MAINTENANCE_SCRIPTS')) {
+    http_response_code(403);
+    die("Forbidden");
+}
+
 require_once 'includes/db.php';
 
 echo "Starting data seeding...\n\n";
